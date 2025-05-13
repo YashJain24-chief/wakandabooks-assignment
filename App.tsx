@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from "react-native";
+import styles from "./src/styles/App";
+import { useEffect, useState } from "react";
+
+import initializeDb from "./src/db/db";
+import { RxDatabase } from "rxdb";
 
 export default function App() {
+  const [db, setDb] = useState<RxDatabase | undefined>(undefined);
+
+  console.log(db);
+
+  useEffect(() => {
+    const initDB = async () => {
+      const _db: RxDatabase | undefined = await initializeDb();
+      setDb(_db);
+    };
+    initDB().then();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text>Load Home Screen here...</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
