@@ -6,9 +6,12 @@ import businessSchema from "./business.schema";
 
 import STORAGE_SQLITE from "./storage";
 
+import {
+  BusinessCollectionName,
+  ArticlesCollectionName,
+} from "../constants/constants";
+
 const dbName = "wakandabooks_assignment_db";
-export const BusinessCollectionName = "business";
-export const ArticlesCollectionName = "articles";
 
 const isDevelopment =
   process.env.NODE_ENV !== "production" || process.env.DEBUG_PROD === "true";
