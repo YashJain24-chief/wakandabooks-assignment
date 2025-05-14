@@ -1,5 +1,6 @@
 import { addRxPlugin, createRxDatabase } from "rxdb/plugins/core";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
+import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
 
 import articleSchema from "./article.schema";
 import businessSchema from "./business.schema";
@@ -10,6 +11,15 @@ import {
   BusinessCollectionName,
   ArticlesCollectionName,
 } from "../constants/constants";
+
+import * as Crypto from "expo-crypto";
+if (typeof global.crypto.subtle === "undefined") {
+  global.crypto.subtle = {
+    digest: Crypto.digest,
+  };
+}
+
+addRxPlugin(RxDBQueryBuilderPlugin);
 
 const dbName = "wakandabooks_assignment_db";
 
@@ -30,6 +40,7 @@ async function initializeDb(storage = STORAGE_SQLITE) {
       name: dbName,
       storage,
       multiInstance: false,
+      closeDuplicates: true,
     });
 
     console.log("Yayyy! Database initialized!");
@@ -43,16 +54,13 @@ async function initializeDb(storage = STORAGE_SQLITE) {
         [BusinessCollectionName]: {
           schema: businessSchema,
         },
-      });
-
-      await db.addCollections({
         [ArticlesCollectionName]: {
           schema: articleSchema,
         },
       });
     }
   } catch (err) {
-    console.log(err);
+    console.log(err, "Creating collections failed...");
   }
 
   return db;

@@ -1,25 +1,17 @@
-// import styles from "./src/styles/App";
-import { useEffect, useState } from "react";
+import "./shim";
+import "react-native-get-random-values";
 
-import initializeDb from "./src/db/db";
-import { RxDatabase } from "rxdb";
 import { NavigationContainer } from "@react-navigation/native";
 import RootNavigator from "./src/navigation/RootNavigator";
+import { Provider } from "react-redux";
+import { store } from "./src/redux/store";
 
 export default function App() {
-  // const [db, setDb] = useState<RxDatabase | undefined>(undefined);
-
-  useEffect(() => {
-    const initDB = async () => {
-      const _db: RxDatabase | undefined = await initializeDb();
-      // setDb(_db);
-    };
-    initDB().then();
-  }, []);
-
   return (
-    <NavigationContainer>
-      <RootNavigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </Provider>
   );
 }
